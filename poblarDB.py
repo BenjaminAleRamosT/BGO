@@ -33,7 +33,7 @@ paramsML = json.dumps({
 if scp:
     # poblar ejecuciones SCP
     instancias = bd.obtenerInstancias(f'''
-                                      'scpb5'
+                                      'scpnrh2','scpnrh4','scpnrh5'
                                       ''')
     print(instancias)
     iteraciones = 30

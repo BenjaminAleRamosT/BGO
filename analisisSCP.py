@@ -32,7 +32,7 @@ incluye_go = False
 bd = BD()
 
 instancias = bd.obtenerInstancias(f'''
-                                  'scp43','scp52','scpb4','scpb5','scpnrg5','scpnrh5'
+                                  'scp41','scpc5','scpd5','scpnre5'
                                   ''')
 
 for instancia in instancias:
@@ -55,46 +55,45 @@ for instancia in instancias:
     fitnessGWO = [] 
     fitnessWOA = [] 
     fitnessPSA = []
-    fitnessGO = []
+    fitnessBGO = []
 
     timeSCA = []
     timeGWO = []
     timeWOA = []
     timePSA = []
-    timeGO = []
+    timeBGO = []
 
     xplSCA = [] 
     xplGWO = [] 
     xplWOA = [] 
     xplPSA = []
-    xplGO = []
+    xplBGO = []
 
 
     xptSCA = []
     xptGWO = []
     xptWOA = []
     xptPSA = []
-    xptGO = []
+    xptBGO = []
     
     bestFitnessSCA = []
     bestFitnessGWO = []
     bestFitnessWOA = []
     bestFitnessPSA = []
-    bestFitnessGO = []
+    bestFitnessBGO = []
 
 
     bestTimeSCA = []
     bestTimeGWO = []
     bestTimeWOA = []
     bestTimePSA = []
-    bestTimeGO = []
+    bestTimeBGO = []
     
     for d in blob:
         
         nombreArchivo = d[0]
         archivo = d[1]
-
-
+        
         direccionDestiono = './Resultados/Transitorio/'+nombreArchivo+'.csv'
         print(direccionDestiono)
         print("-------------------------------------------------------------------------------")
@@ -104,6 +103,8 @@ for instancia in instancias:
         print(data)
 
         mh = nombreArchivo.split('_')[0]
+        if mh == 'GO':
+            mh = 'BGO'
 
         if mh == "GWO" and incluye_gwo == False:
             archivoResumenFitness.write(",best,avg. fitness, std fitness")
@@ -111,7 +112,7 @@ for instancia in instancias:
             archivoResumenPercentage.write(", avg. XPL%, avg. XPT%")
             incluye_gwo = True
 
-        if mh == "GO" and incluye_go == False:
+        if mh == "BGO" and incluye_go == False:
             archivoResumenFitness.write(",best,avg. fitness, std fitness")
             archivoResumenTimes.write(", min time (s), avg. time (s), std time (s)")
             archivoResumenPercentage.write(", avg. XPL%, avg. XPT%")
@@ -176,12 +177,12 @@ for instancia in instancias:
             xptWOA.append(np.round(np.mean(xpt), decimals=2))
             archivoFitness.write(f'WOA,{str(np.min(fitness))}\n')
             
-        if mh == 'GO':
-            fitnessGO.append(np.min(fitness))
-            timeGO.append(np.round(np.sum(time),3))
-            xplGO.append(np.round(np.mean(xpl), decimals=2))
-            xptGO.append(np.round(np.mean(xpt), decimals=2))
-            archivoFitness.write(f'GO,{str(np.min(fitness))}\n')
+        if mh == 'BGO':
+            fitnessBGO.append(np.min(fitness))
+            timeBGO.append(np.round(np.sum(time),3))
+            xplBGO.append(np.round(np.mean(xpl), decimals=2))
+            xptBGO.append(np.round(np.mean(xpt), decimals=2))
+            archivoFitness.write(f'BGO,{str(np.min(fitness))}\n')
 
         if graficos:
 
@@ -243,9 +244,9 @@ for instancia in instancias:
         archivoResumenPercentage.write(f''',{np.round(np.average(xplGWO),3)},{np.round(np.average(xptGWO),3)}''')
 
     if incluye_go:
-        archivoResumenFitness.write(f''',{np.min(fitnessGO)},{np.round(np.average(fitnessGO),3)},{np.round(np.std(fitnessGO),3)}''')
-        archivoResumenTimes.write(f''',{np.min(timeGO)},{np.round(np.average(timeGO),3)},{np.round(np.std(timeGO),3)}''')
-        archivoResumenPercentage.write(f''',{np.round(np.average(xplGO),3)},{np.round(np.average(xptGO),3)}''')
+        archivoResumenFitness.write(f''',{np.min(fitnessBGO)},{np.round(np.average(fitnessBGO),3)},{np.round(np.std(fitnessBGO),3)}''')
+        archivoResumenTimes.write(f''',{np.min(timeBGO)},{np.round(np.average(timeBGO),3)},{np.round(np.std(timeBGO),3)}''')
+        archivoResumenPercentage.write(f''',{np.round(np.average(xplBGO),3)},{np.round(np.average(xptBGO),3)}''')
 
     if incluye_sca:
         archivoResumenFitness.write(f''',{np.min(fitnessSCA)},{np.round(np.average(fitnessSCA),3)},{np.round(np.std(fitnessSCA),3)}''')
@@ -277,6 +278,9 @@ for instancia in instancias:
         data = pd.read_csv(direccionDestiono)
         # print('##################################',direccionDestiono ,data.shape)
         mh = nombreArchivo.split('_')[0]
+        if mh == 'GO':
+            mh = 'BGO'
+        
         problem = nombreArchivo.split('_')[1]
 
         iteraciones = data['iter']
@@ -297,9 +301,9 @@ for instancia in instancias:
         if mh == 'WOA':
             bestFitnessWOA      = fitness
             bestTimeWOA         = time
-        if mh == 'GO':
-            bestFitnessGO      = fitness
-            bestTimeGO         = time
+        if mh == 'BGO':
+            bestFitnessBGO      = fitness
+            bestTimeBGO         = time
 
 
         #os.remove('./Resultados/Transitorio/'+nombreArchivo+'.csv')
@@ -315,12 +319,12 @@ for instancia in instancias:
     if incluye_woa:
         axPER.plot(iteraciones, bestFitnessWOA, color="y", label="WOA")
     if incluye_go:
-        axPER.plot(iteraciones, bestFitnessGO, color="y", label="GO")
+        axPER.plot(iteraciones, bestFitnessBGO, color="y", label="BGO")
     axPER.set_title(f'Coverage \n {problem}')
     axPER.set_ylabel("Fitness")
     axPER.set_xlabel("Iteration")
     axPER.legend(loc = 'upper right')
-    # plt.savefig(f'{dirResultado}/Best/fitness_{problem}.pdf')
+    plt.savefig(f'{dirResultado}/Best/fitness_{problem}.pdf')
     plt.close('all')
     print(f'Grafico de fitness realizado {problem} ')
     
@@ -329,7 +333,7 @@ for instancia in instancias:
     axPER.plot(iteraciones, bestTimeSCA, color="b", label="SCA")
     axPER.plot(iteraciones, bestTimePSA, color="g", label="PSA")
     # axPER.plot(iteraciones, bestTimeWOA, color="y", label="WOA")
-    axPER.plot(iteraciones, bestTimeGO, color="y", label="GO")
+    axPER.plot(iteraciones, bestTimeBGO, color="y", label="BGO")
     axPER.set_title(f'Time (s) \n {problem}')
     axPER.set_ylabel("Time (s)")
     axPER.set_xlabel("Iteration")

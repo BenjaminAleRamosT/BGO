@@ -1,7 +1,7 @@
 import pandas as pd
 from scipy.stats import mannwhitneyu
 
-instancias = ['F1','F5','F8','F10','F11']
+instancias = ['scpnrh2','scpnrh4','scpnrh5']
 
 
 for instancia in instancias:
@@ -31,7 +31,7 @@ for instancia in instancias:
     for columna in df.columns:
         if columna != columna_referencia:
             # Realizar el test de Wilcoxon
-            statistic, p_value = mannwhitneyu(df[columna], df[columna_referencia])
+            statistic, p_value = mannwhitneyu(df[columna], df[columna_referencia], alternative='less')
         
             # Almacenar el resultado en el diccionario
             resultados_wilcoxon[columna] = {'Estadística': statistic, 'Valor p': p_value}
