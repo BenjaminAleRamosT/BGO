@@ -22,7 +22,7 @@ incluye_gwo = False
 incluye_psa = False
 incluye_woa = False
 incluye_sca = False
-incluye_go = False
+incluye_bgo = False
 
 
 bd = BD()
@@ -46,43 +46,43 @@ for instancia in instancias:
     divGWO = [] 
     divWOA = [] 
     divPSA = []
-    divGO = []
+    divBGO = []
 
     fitnessSCA = [] 
     fitnessGWO = [] 
     fitnessWOA = [] 
     fitnessPSA = []
-    fitnessGO = []
+    fitnessBGO = []
 
     timeSCA = []
     timeGWO = []
     timeWOA = []
     timePSA = []
-    timeGO = []
+    timeBGO = []
 
     xplSCA = [] 
     xplGWO = [] 
     xplWOA = [] 
     xplPSA = []
-    xplGO = []
+    xplBGO = []
 
     xptSCA = []
     xptGWO = []
     xptWOA = []
     xptPSA = []
-    xptGO = []
+    xptBGO = []
     
     bestFitnessSCA = []
     bestFitnessGWO = []
     bestFitnessWOA = []
     bestFitnessPSA = []
-    bestFitnessGO = []
+    bestfitnessBGO = []
 
     bestTimeSCA = []
     bestTimeGWO = []
     bestTimeWOA = []
     bestTimePSA = []
-    bestTimeGO = []
+    besttimeBGO = []
     
     for d in blob:
         
@@ -104,11 +104,11 @@ for instancia in instancias:
             archivoResumenPercentage.write(", avg. XPL%, avg. XPT%")
             incluye_gwo = True
 
-        if mh == "GO" and incluye_go == False:
+        if mh == "BGO" and incluye_bgo == False:
             archivoResumenFitness.write(",best,avg. fitness, std fitness")
             archivoResumenTimes.write(", min time (s), avg. time (s), std time (s)")
             archivoResumenPercentage.write(", avg. XPL%, avg. XPT%")
-            incluye_go = True
+            incluye_bgo = True
             
         if mh == "PSA" and incluye_psa == False:
             archivoResumenFitness.write(",best,avg. fitness, std fitness")
@@ -143,12 +143,12 @@ for instancia in instancias:
             xplPSA.append(np.round(np.mean(xpl), decimals=2))
             xptPSA.append(np.round(np.mean(xpt), decimals=2))
             archivoFitness.write(f'PSA,{str(np.min(fitness))}\n')
-        if mh == 'GO':
+        if mh == 'BGO':
             fitnessPSA.append(np.min(fitness))
             timePSA.append(np.round(np.sum(time),3))
             xplPSA.append(np.round(np.mean(xpl), decimals=2))
             xptPSA.append(np.round(np.mean(xpt), decimals=2))
-            archivoFitness.write(f'GO,{str(np.min(fitness))}\n')
+            archivoFitness.write(f'BGO,{str(np.min(fitness))}\n')
         if mh == 'SCA':
             fitnessSCA.append(np.min(fitness))
             timeSCA.append(np.round(np.sum(time),3))
@@ -267,8 +267,8 @@ for instancia in instancias:
         if mh == 'WOA':
             bestFitnessWOA      = fitness
             bestTimeWOA         = time
-        if mh == 'GO':
-            bestFitnessGO      = fitness
+        if mh == 'BGO':
+            bestfitnessBGO      = fitness
             bestTimeWOA         = time
         
         os.remove('./Resultados/Transitorio/'+nombreArchivo+'.csv')
@@ -283,8 +283,8 @@ for instancia in instancias:
         axPER.plot(iteraciones, bestFitnessPSA, color="g", label="PSA")
     if incluye_woa:
         axPER.plot(iteraciones, bestFitnessWOA, color="y", label="WOA")
-    if incluye_go:
-        axPER.plot(iteraciones, bestFitnessGO, color="y", label="GO")
+    if incluye_bgo:
+        axPER.plot(iteraciones, bestfitnessBGO, color="y", label="BGO")
     axPER.set_title(f'Coverage \n {problem}')
     axPER.set_ylabel("Fitness")
     axPER.set_xlabel("Iteration")
