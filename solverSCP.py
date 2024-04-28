@@ -7,7 +7,7 @@ from Metaheuristics.SCA import iterarSCA
 from Metaheuristics.WOA import iterarWOA
 from Metaheuristics.MFO import iterarMFO
 from Metaheuristics.GA import iterarGA
-from Metaheuristics.GO import GO
+from Metaheuristics.BGO import BGO
 from Diversity.hussainDiversity import diversidadHussain
 from Diversity.XPLXTP import porcentajesXLPXPT
 import time
@@ -104,12 +104,12 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
         # perturbo la poblacion con la metaheuristica, pueden usar SCA y GWO
         # en las funciones internas tenemos los otros dos for, for de individuos y for de dimensiones
         # print(poblacion)
-        if mh == 'GO':
+        if mh == 'BGO':
             # Debo agregar soluciones máximas y mínimas
             xmax = 1
             xmin = 0
             MaxFEs = 1
-            poblacion = GO(pop, instance.getColumns(), xmax, xmin, MaxFEs, instancia, iter, maxIter, poblacion)
+            poblacion = BGO(pop, instance.getColumns(), xmax, xmin, MaxFEs, instancia, iter, maxIter, poblacion)
         if mh == "SCA":
             poblacion = iterarSCA(maxIter, iter, instance.getColumns(), poblacion.tolist(), Best.tolist())
         if mh == "GWO":
