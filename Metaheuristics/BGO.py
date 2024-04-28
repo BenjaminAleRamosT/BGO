@@ -12,8 +12,8 @@ def selectID(popsize, current_id, num_select):
     candidates.remove(current_id)
     return np.random.choice(candidates, size=num_select, replace=False)
 
-def GO(popsize, dimension, xmax, xmin, MaxFEs, function, iter, x, fitness, type):
-    # Función principal del algoritmo Growth Optimizer (GO).
+def BGO(popsize, dimension, xmax, xmin, MaxFEs, function, iter, x, fitness, type):
+    # Función principal del algoritmo Binary Growth Optimizer (BGO).
     # Realiza la optimización en un espacio de búsqueda multidimensional.
 
     if type == False:
